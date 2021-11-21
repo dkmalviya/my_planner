@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:my_planner/constant/api_constants.dart';
-import 'package:my_planner/models/request/create_account_request_dto.dart';
+import 'package:my_planner/models/request/user/create_account_request_dto.dart';
 import 'package:my_planner/models/response/generic/generic_response_dto.dart';
-import 'package:my_planner/models/response/login_succes_response_dto.dart';
+import 'package:my_planner/models/response/login/login_succes_response_dto.dart';
 import 'package:my_planner/util/string_exception.dart';
 
 class ApiProvider {

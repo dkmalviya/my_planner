@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_planner/constant/app_constants.dart';
 import 'package:my_planner/constant/data.dart';
-import 'package:my_planner/models/expense_summary_model.dart';
+import 'package:my_planner/models/dto/expense_summary_model.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/util/utils.dart';
 

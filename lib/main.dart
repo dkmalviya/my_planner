@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_planner/models/user_info.dart';
 import 'package:my_planner/route/route_generator.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/util/scrollview_behaviour.dart';
 
 import 'constant/app_constants.dart';
+import 'models/dto/user_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

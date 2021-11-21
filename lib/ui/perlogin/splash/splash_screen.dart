@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:my_planner/constant/app_constants.dart';
 import 'package:my_planner/constant/string_constant.dart';
 import 'package:my_planner/main.dart';
-import 'package:my_planner/models/user_info.dart';
+import 'package:my_planner/models/dto/user_info.dart';
 import 'package:my_planner/util/house_db.dart';
 import 'package:my_planner/util/utils.dart';
 

@@ -1,8 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
-import 'package:my_planner/models/request/create_account_request_dto.dart';
+import 'package:my_planner/models/request/user/create_account_request_dto.dart';
 import 'package:my_planner/models/response/generic/generic_response_dto.dart';
-import 'package:my_planner/models/response/login_succes_response_dto.dart';
+import 'package:my_planner/models/response/login/login_succes_response_dto.dart';
 import 'package:my_planner/service/api_provider.dart';
 
 class OnBoardRepository{

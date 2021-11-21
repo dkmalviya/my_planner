@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_planner/constant/app_constants.dart';
-import 'package:my_planner/models/fav_expense_category_model.dart';
+import 'package:my_planner/models/dto/fav_expense_category_model.dart';
 import 'package:my_planner/ui/dashboard/house/ui_view/widgets/back_app_bar_widget.dart';
 import 'package:my_planner/util/house_db.dart';
 

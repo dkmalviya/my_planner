@@ -1,7 +1,7 @@
 
 class CreateAccountRequestDto {
 
-
+	
   final String email;
   final String password;
   final String passwordRepeat;

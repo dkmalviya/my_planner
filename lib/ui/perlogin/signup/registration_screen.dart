@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_planner/constant/app_constants.dart';
-import 'package:my_planner/models/request/create_account_request_dto.dart';
+import 'package:my_planner/models/request/user/create_account_request_dto.dart';
 import 'package:my_planner/service/on_board_repository.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/ui/dashboard/house/ui_view/widgets/alert_dialog.dart';

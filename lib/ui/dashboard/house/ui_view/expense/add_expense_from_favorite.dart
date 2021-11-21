@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_planner/constant/app_constants.dart';
-import 'package:my_planner/models/fav_expense_category_model.dart';
+import 'package:my_planner/models/dto/fav_expense_category_model.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/util/house_db.dart';
 import 'package:my_planner/util/ui_utils.dart';

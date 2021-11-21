@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_planner/constant/app_constants.dart';
+import 'package:my_planner/models/request/create_account_request_dto.dart';
+import 'package:my_planner/service/on_board_repository.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
+import 'package:my_planner/ui/dashboard/house/ui_view/widgets/alert_dialog.dart';
 import 'package:my_planner/util/ui_utils.dart';
 import 'package:my_planner/util/utils.dart';
+import 'package:my_planner/widget/progress_loader.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -160,7 +164,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             style: loginButtonStyle,
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
-                              Navigator.of(context).pushNamed("/verify_token");
+
+                              registerUser();
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(12.0),
@@ -181,5 +186,36 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ),
       )),
     );
+  }
+
+
+  void registerUser()async{
+    try{
+      ProgressLoader.show(context);
+      var onBoardRepository = OnBoardRepository();
+
+      CreateAccountRequestDto createAccountRequestDto=CreateAccountRequestDto(textEditingControllerEmail.text, textEditingControllerPassword.text, textEditingControllerPasswordConfirm.text);
+
+      var login =
+      await onBoardRepository.createAccount(createAccountRequestDto);
+      ProgressLoader.hide();
+      Navigator.of(context).pushNamed("/verify_token");
+    }
+    catch(e){
+      ProgressLoader.hide();
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return CustomDialogBox(
+                "Failed",
+                e.toString(),
+                "OK",
+                alertIcon, () {
+              Navigator.of(context).pop();
+            });
+          });
+    }
+
   }
 }

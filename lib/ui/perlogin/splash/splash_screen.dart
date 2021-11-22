@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
         MyApp.userInfo = UserInfo.fromJson(readEncryptedUserData);
         print(MyApp.userInfo);
 
-        if (MyApp.userInfo.profileStatus == accountStatusCompleted) {
+        if (MyApp.userInfo.profileStatus == accountStatusActive) {
           Navigator.of(context).pushReplacementNamed('/home');
         } else {
           Navigator.of(context).pushReplacementNamed('/login');

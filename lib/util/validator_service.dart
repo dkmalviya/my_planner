@@ -1,51 +1,47 @@
-class ValidateService {
-  String? isEmptyField(String value) {
-    if (value.isEmpty) {
-      return 'Required';
-    }
-    return null;
+bool isEmptyField(String value) {
+  if (value.isEmpty) {
+    return true;
   }
+  return false;
+}
 
-  String? validatePhoneNumber(String value) {
-    String? isEmpty = isEmptyField(value);
-    int len = value.length;
+bool validatePhoneNumber(String value) {
+  int len = value.length;
 
-    if (len != 10) {
-      return "Mobile Number must be of 10 digits";
-    }
-    return null;
+  if (len != 10) {
+    return false;
   }
+  return true;
+}
 
-  String? validateEmail(String value) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = RegExp(pattern);
+bool validateEmail(String value) {
+  String pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regExp = RegExp(pattern);
 
-    if (!regExp.hasMatch(value)) {
-      return "Invalid Email";
-    }
-    return null;
+  if (!regExp.hasMatch(value)) {
+    return false;
   }
+  return true;
+}
 
-  String? validatePassword(String value) {
-    String? isEmpty = isEmptyField(value);
-    String pattern = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$';
-    RegExp regExp = RegExp(pattern);
+bool validatePassword(String value) {
+  return true;
+  String pattern = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$';
+  RegExp regExp = RegExp(pattern);
 
-    if (!regExp.hasMatch(value)) {
-      return "Minimum eight characters, at least one letter and one number";
-    }
-    return null;
+  if (!regExp.hasMatch(value)) {
+    return false; //"Minimum eight characters, at least one letter and one number";
   }
+  return true;
+}
 
-  String? validateName(String value) {
-    String? isEmpty = isEmptyField(value);
-    String pattern = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$';
-    RegExp regExp = RegExp(pattern);
+bool validateName(String value) {
+  String pattern = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$';
+  RegExp regExp = RegExp(pattern);
 
-    if (!regExp.hasMatch(value)) {
-      return "Minimum eight characters, at least one letter and one number";
-    }
-    return null;
+  if (!regExp.hasMatch(value)) {
+    return false;
   }
+  return true;
 }

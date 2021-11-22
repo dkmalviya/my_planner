@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_planner/constant/app_constants.dart';
+import 'package:my_planner/constant/string_constant.dart';
+import 'package:my_planner/models/response/login/get_user_details_response_dto.dart';
 import 'package:my_planner/service/on_board_repository.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/ui/dashboard/house/ui_view/widgets/alert_dialog.dart';
 import 'package:my_planner/util/ui_utils.dart';
 import 'package:my_planner/util/utils.dart';
+import 'package:my_planner/util/validator_service.dart';
 import 'package:my_planner/widget/progress_loader.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -140,22 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: loginButtonStyle,
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
-                              /*showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (BuildContext context) {
-                                    return CustomDialogBox(
-                                        "Success",
-                                        "Registration Successfully..!!",
-                                        "OK",
-                                        alertIcon, () {
-                                      Navigator.of(context).pop();
-                                    });
-                                  });*/
-
-                              loginApiCall();
-
-                            //  Navigator.of(context).pushNamed("/home");
+                              validateLoginForm();
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(12.0),
@@ -174,7 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               FocusScope.of(context).unfocus();
                               Navigator.of(context).pushNamed("/registration");
-
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(12.0),
@@ -199,28 +187,82 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginApiCall() async {
-    try{
+    var userName = textEditingControllerEmail.text;
+    var password = textEditingControllerPassword.text;
+
+    try {
       ProgressLoader.show(context);
       var onBoardRepository = OnBoardRepository();
-      var login =
-      await onBoardRepository.login("deepeshkumar03@gmail.com", "abc123");
+      var login = await onBoardRepository.login(userName, password);
       ProgressLoader.hide();
-      Navigator.of(context).pushNamed("/home");
-    }
-    catch(e){
+
+      getUserDetails(login.accessToken);
+    } catch (e) {
       ProgressLoader.hide();
       showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return CustomDialogBox(
-                "Failed",
-                e.toString(),
-                "OK",
-                alertIcon, () {
+            return CustomDialogBox("Failed", e.toString(), "OK", alertIcon, () {
               Navigator.of(context).pop();
             });
           });
     }
+  }
+
+  void getUserDetails(String authToken) async {
+    try {
+      ProgressLoader.show(context);
+      var onBoardRepository = OnBoardRepository();
+      var userDetails = await onBoardRepository.getUserDetails(authToken);
+      ProgressLoader.hide();
+      saveUserDetails(userDetails);
+    } catch (e) {
+      ProgressLoader.hide();
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return CustomDialogBox("Failed", e.toString(), "OK", alertIcon, () {
+              Navigator.of(context).pop();
+            });
+          });
+    }
+  }
+
+  void validateLoginForm() {
+    if (textEditingControllerEmail.text != "" &&
+        validateEmail(textEditingControllerEmail.text)) {
+      if (textEditingControllerPassword.text != "" &&
+          validatePassword(textEditingControllerPassword.text)) {
+        loginApiCall();
+      } else {
+        Fluttertoast.showToast(msg: msgValidPassword);
+      }
+    } else {
+      Fluttertoast.showToast(msg: msgValidEmail);
+    }
+  }
+
+  void saveUserDetails(GetUserDetails userDetails) {
+    flowDecider(userDetails.profileStatus);
+    //TODO persist data in shared preference
+  }
+
+  void flowDecider(String status) {
+    print(status);
+    if (status == accountStatusInActive) {
+      Navigator.of(context).pushReplacementNamed("/verify_token");
+    } else if (status == accountStatusTokenVerified) {
+      Navigator.of(context).pushReplacementNamed("/add_profile");
+    } else if (status == accountStatusProfile) {
+      Navigator.of(context).pushReplacementNamed("/add_house");
+    } else if (status == accountStatusHouse) {
+      Navigator.of(context).pushReplacementNamed("/success");
+    } else if (status == accountStatusActive) {
+      Navigator.of(context).pushReplacementNamed("/home");
+    }
+
+    //TODO persist data in shared preference
   }
 }

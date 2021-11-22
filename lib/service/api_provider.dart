@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:my_planner/constant/api_constants.dart';
 import 'package:my_planner/models/request/user/create_account_request_dto.dart';
 import 'package:my_planner/models/response/generic/generic_response_dto.dart';
+import 'package:my_planner/models/response/login/get_user_details_response_dto.dart';
 import 'package:my_planner/models/response/login/login_succes_response_dto.dart';
 import 'package:my_planner/util/string_exception.dart';
 
@@ -79,6 +80,35 @@ class ApiProvider {
     } else {
       // If that call was not successful, throw an error.
       throw StringException('Unknown Error');
+    }
+  }
+
+  Future<GetUserDetails> getUserDetails(String authToken) async {
+    var uri = Uri.parse(userDetails);
+
+    Response response = await client.get(
+      uri,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "bearer " + authToken
+      }
+    );
+
+    if (response.statusCode == 200) {
+
+      print(response.body);
+      var userDetails = getUserDetailsFromJson(response.body);
+      // If the call to the server was successful, parse the JSON
+      return userDetails;
+    } else if (response.statusCode == 400) {
+      // If that call was not successful, throw an error.
+      throw StringException('An account already exists with this email');
+    } else if (response.statusCode == 401) {
+      // If that call was not successful, throw an error.
+      throw StringException('Invalid Token');
+    } else {
+      // If that call was not successful, throw an error.
+      throw StringException('Please try after some time');
     }
   }
 

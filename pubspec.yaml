@@ -49,6 +49,7 @@ dependencies:
   encrypt: ^5.0.1
   http: ^0.13.4
   crypto: ^3.0.1
+  dependencies:
 
   fluttertoast: ^8.0.8
 
@@ -97,3 +98,5 @@ flutter:
         - asset: assets/fonts/Roboto-Regular.ttf
         - asset: assets/fonts/Roboto-Medium.ttf
           weight: 400
+flutter_intl:
+  enabled: true

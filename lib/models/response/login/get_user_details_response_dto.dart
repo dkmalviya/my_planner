@@ -25,15 +25,15 @@ class GetUserDetails {
   });
 
   bool activeProfile;
-  String dateOfBirth;
+  dynamic dateOfBirth;
   String email;
-  String firstName;
-  String gender;
-  String imageUrl;
-  String lastName;
+  dynamic firstName;
+  dynamic gender;
+  dynamic imageUrl;
+  dynamic lastName;
   String maritalStatus;
-  String middleName;
-  String mobile;
+  dynamic middleName;
+  dynamic mobile;
   bool notificationEnable;
   String profileStatus;
 

@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_planner/constant/app_constants.dart';
+import 'package:my_planner/constant/string_constant.dart';
 import 'package:my_planner/models/request/user/create_account_request_dto.dart';
 import 'package:my_planner/service/on_board_repository.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/ui/dashboard/house/ui_view/widgets/alert_dialog.dart';
 import 'package:my_planner/util/ui_utils.dart';
 import 'package:my_planner/util/utils.dart';
+import 'package:my_planner/util/validator_service.dart';
 import 'package:my_planner/widget/progress_loader.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -17,6 +20,10 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+
+  late String authToken;
+  late String refreshToken;
+
   TextEditingController textEditingControllerEmail = TextEditingController();
   TextEditingController textEditingControllerPassword = TextEditingController();
   TextEditingController textEditingControllerPasswordConfirm =
@@ -199,7 +206,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       var login =
       await onBoardRepository.createAccount(createAccountRequestDto);
       ProgressLoader.hide();
-      Navigator.of(context).pushNamed("/verify_token");
+      Navigator.of(context).pop();
     }
     catch(e){
       ProgressLoader.hide();
@@ -217,5 +224,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           });
     }
 
+  }
+
+  void validateRegistrationForm() {
+    if (textEditingControllerEmail.text != "" &&
+        validateEmail(textEditingControllerEmail.text)) {
+      if (textEditingControllerPassword.text != "" &&
+          validatePassword(textEditingControllerPassword.text)) {
+        if (textEditingControllerPasswordConfirm.text != "" &&
+            (textEditingControllerPasswordConfirm.text ==
+                textEditingControllerPassword.text)) {
+
+          registerUser();
+        }
+        else {
+          Fluttertoast.showToast(
+              msg: msgPasswordAndConfirmPasswordMismatch);
+        }
+      }
+      else {
+        Fluttertoast.showToast(msg: msgValidPassword);
+      }
+    } else {
+      Fluttertoast.showToast(msg: msgValidEmail);
+    }
   }
 }

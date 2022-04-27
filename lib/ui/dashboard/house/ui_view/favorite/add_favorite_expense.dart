@@ -72,7 +72,7 @@ class _AddFavoriteExpenseState extends State<AddFavoriteExpense> {
 
     return Scaffold(
       appBar: BackAppBarWidget(
-          "Add Favorite Expense", false, "", true, false, () {}),
+          "Add Favorite Expense", false, "", true, false, () {},false, () {}),
       body: Container(
           color: Colors.transparent,
           child: Column(

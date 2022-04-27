@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_planner/constant/app_constants.dart';
+import 'package:my_planner/constant/string_constant.dart';
+import 'package:my_planner/models/request/user/create_profile_request_dto.dart';
+import 'package:my_planner/service/on_board_repository.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
+import 'package:my_planner/ui/dashboard/house/ui_view/widgets/alert_dialog.dart';
 import 'package:my_planner/ui/profile/step.dart';
 import 'package:my_planner/util/ui_utils.dart';
+import 'package:my_planner/util/validator_service.dart';
+import 'package:my_planner/widget/progress_loader.dart';
 
 class AddPersonalDetails extends StatefulWidget {
   const AddPersonalDetails({Key? key}) : super(key: key);
@@ -13,8 +20,19 @@ class AddPersonalDetails extends StatefulWidget {
 
 class _AddPersonalDetailsState extends State<AddPersonalDetails> {
   TextEditingController firstNameTextController = TextEditingController();
+  TextEditingController middleNameTextController = TextEditingController();
+  TextEditingController lastNameTextController = TextEditingController();
+  TextEditingController mobileNumberTextController = TextEditingController();
+
+  late String selectedGender;
+  late String selectedMaritalStatus;
+
   late List<bool> isGenderSelected;
+  late List<String> genderValueList;
+
   late List<bool> isMaritalStatusSelected;
+  late List<String> maritalStatusValueList;
+
   late List<bool> isNotificationSelected;
 
   @override
@@ -22,8 +40,58 @@ class _AddPersonalDetailsState extends State<AddPersonalDetails> {
     // TODO: implement initState
     super.initState();
     isGenderSelected = [true, false];
+    genderValueList = ["Male", "Female"];
+    selectedGender = genderValueList[0];
     isMaritalStatusSelected = [true, false];
+    maritalStatusValueList = ["Single", "Married"];
+    selectedMaritalStatus = maritalStatusValueList[0];
     isNotificationSelected = [true, false];
+  }
+
+  void validateProfileForm() {
+    if (!isEmptyField(firstNameTextController.text)) {
+      if (!isEmptyField(lastNameTextController.text)) {
+        if (validatePhoneNumber(mobileNumberTextController.text)) {
+          updateProfileApiCall();
+        } else {
+          Fluttertoast.showToast(msg: msgValidMobileNumber);
+        }
+      } else {
+        Fluttertoast.showToast(msg: msgValidLastName);
+      }
+    } else {
+      Fluttertoast.showToast(msg: msgValidFirstName);
+    }
+  }
+
+  updateProfileApiCall() async {
+    CreateProfileRequestDto createProfileRequestDto = CreateProfileRequestDto(
+        "1991-01-01",
+        firstNameTextController.text,
+        middleNameTextController.text,
+        lastNameTextController.text,
+        selectedGender,
+        selectedMaritalStatus,
+        mobileNumberTextController.text);
+    print(createProfileRequestDto.toString());
+    try {
+      ProgressLoader.show(context);
+      var onBoardRepository = OnBoardRepository();
+
+      await onBoardRepository.updateProfile(createProfileRequestDto, true);
+      ProgressLoader.hide();
+      Navigator.of(context).pushNamed("/add_house");
+    } catch (e) {
+      ProgressLoader.hide();
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return CustomDialogBox("Failed", e.toString(), "OK", alertIcon, () {
+              Navigator.of(context).pop();
+            });
+          });
+    }
   }
 
   @override
@@ -66,7 +134,7 @@ class _AddPersonalDetailsState extends State<AddPersonalDetails> {
             borderRadius: BorderRadius.circular(10)),
         child: TextFormField(
           style: HouseTheme.bodyLight,
-          controller: firstNameTextController,
+          controller: middleNameTextController,
           decoration: const InputDecoration(
             hintText: "Enter middle name here",
             border: InputBorder.none,
@@ -89,7 +157,7 @@ class _AddPersonalDetailsState extends State<AddPersonalDetails> {
             borderRadius: BorderRadius.circular(10)),
         child: TextFormField(
           style: HouseTheme.bodyLight,
-          controller: firstNameTextController,
+          controller: lastNameTextController,
           decoration: const InputDecoration(
             hintText: "Enter last name here",
             border: InputBorder.none,
@@ -112,7 +180,7 @@ class _AddPersonalDetailsState extends State<AddPersonalDetails> {
             borderRadius: BorderRadius.circular(10)),
         child: TextFormField(
           style: HouseTheme.bodyLight,
-          controller: firstNameTextController,
+          controller: mobileNumberTextController,
           decoration: const InputDecoration(
             hintText: "Enter mobile number here",
             border: InputBorder.none,
@@ -173,6 +241,7 @@ class _AddPersonalDetailsState extends State<AddPersonalDetails> {
         setState(() {
           for (int i = 0; i < isGenderSelected.length; i++) {
             isGenderSelected[i] = i == index;
+            selectedGender = genderValueList[index];
           }
         });
       },
@@ -232,6 +301,7 @@ class _AddPersonalDetailsState extends State<AddPersonalDetails> {
         setState(() {
           for (int i = 0; i < isMaritalStatusSelected.length; i++) {
             isMaritalStatusSelected[i] = i == index;
+            selectedMaritalStatus = maritalStatusValueList[index];
           }
         });
       },
@@ -366,7 +436,7 @@ class _AddPersonalDetailsState extends State<AddPersonalDetails> {
                         style: secondaryButtonStyle,
                         onPressed: () async {
                           FocusScope.of(context).unfocus();
-                          Navigator.of(context).pushNamed("/add_house");
+                          validateProfileForm();
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(12.0),

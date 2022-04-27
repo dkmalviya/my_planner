@@ -1,31 +1,10 @@
-class HouseMemberModel {
-  int memberId;
-  String houseMemberName;
-  int age;
-  String gender;
-  String memberType;
-  String relation;
-  String profilePictureUrl;
-  bool isActive;
-  String mobile;
-  String email;
-  String createdOn;
+import 'package:my_planner/models/dto/house_model.dart';
+import 'package:my_planner/models/dto/member_model.dart';
 
-  HouseMemberModel(
-      this.memberId,
-      this.houseMemberName,
-      this.age,
-      this.gender,
-      this.memberType,
-      this.relation,
-      this.profilePictureUrl,
-      this.isActive,
-      this.mobile,
-      this.email,
-      this.createdOn);
+class HouseMemberModel{
 
-  @override
-  String toString() {
-    return 'HouseMemberModel{memberId: $memberId, houseMemberName: $houseMemberName, age: $age, gender: $gender, memberType: $memberType, relation: $relation, profilePictureUrl: $profilePictureUrl, isActive: $isActive, mobile: $mobile, email: $email, createdOn: $createdOn}';
-  }
+  HouseModel houseMode;
+  List<MemberModel> memberModel;
+
+  HouseMemberModel(this.houseMode, this.memberModel);
 }

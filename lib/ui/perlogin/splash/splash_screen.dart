@@ -7,6 +7,8 @@ import 'package:my_planner/constant/app_constants.dart';
 import 'package:my_planner/constant/string_constant.dart';
 import 'package:my_planner/main.dart';
 import 'package:my_planner/models/dto/user_info.dart';
+import 'package:my_planner/models/response/login/get_user_details_response_dto.dart';
+import 'package:my_planner/service/on_board_repository.dart';
 import 'package:my_planner/util/house_db.dart';
 import 'package:my_planner/util/utils.dart';
 
@@ -29,33 +31,68 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigateUser() async {
     bool loginStatus = await houseDB.readLoginStatus(Constants.loginStatusKey);
-    if (loginStatus) {
-      var readEncryptedUserData =
-          await houseDB.readEncryptedUserData(Constants.userDataKey);
+    try {
+      if (loginStatus) {
+        var readEncryptedUserData =
+            await houseDB.readEncryptedUserData(Constants.userDataKey);
 
-      if (readEncryptedUserData != null || readEncryptedUserData != "") {
-        MyApp.userInfo = UserInfo.fromJson(readEncryptedUserData);
-        print(MyApp.userInfo);
-
-        if (MyApp.userInfo.profileStatus == accountStatusActive) {
-          Navigator.of(context).pushReplacementNamed('/home');
-        } else {
-          Navigator.of(context).pushReplacementNamed('/login');
+        if (readEncryptedUserData != null || readEncryptedUserData != "") {
+          MyApp.userInfo = UserInfo.fromJson(readEncryptedUserData);
+          print(MyApp.userInfo);
+          var onBoardRepository = OnBoardRepository();
+          var userDetails =
+              await onBoardRepository.getUserDetails(MyApp.userInfo.authToken);
+          saveUserDetails(userDetails, MyApp.userInfo.authToken);
         }
+      } else {
+        Navigator.of(context).pushReplacementNamed('/login');
       }
-    } else {
-      MyApp.userInfo.userId = 1;
-      MyApp.userInfo.userName = "Deepesh Malviya";
-      MyApp.userInfo.email = "deepeshmalviya@outlook.com";
-      MyApp.userInfo.password = "abc123";
-      MyApp.userInfo.mobileNumber = "7774043339";
-      MyApp.userInfo.profileStatus = accountStatusHouse;
-
+    } on Exception catch (e) {
       await houseDB.saveLoginStatus(Constants.loginStatusKey, true);
-      await houseDB.saveEncryptedUserData(
-          Constants.userDataKey, MyApp.userInfo);
       Navigator.of(context).pushReplacementNamed('/login');
     }
+  }
+
+  void saveUserDetails(GetUserDetails userDetails, String authToken) async {
+    if (userDetails.profileStatus != accountStatusInActive) {
+      MyApp.userInfo.mobileNumber = userDetails.mobile;
+      MyApp.userInfo.gender = userDetails.gender;
+      MyApp.userInfo.firstName = userDetails.firstName;
+      MyApp.userInfo.lastName = userDetails.lastName;
+      MyApp.userInfo.notificationEnable = userDetails.notificationEnable;
+      MyApp.userInfo.maritalStatus = userDetails.maritalStatus;
+      MyApp.userInfo.userId = 2;
+
+    }
+
+    MyApp.userInfo.email = userDetails.email;
+    MyApp.userInfo.authToken = authToken;
+    MyApp.userInfo.refreshToken = authToken;
+    MyApp.userInfo.profileStatus = userDetails.profileStatus;
+
+
+
+    await houseDB.saveLoginStatus(Constants.loginStatusKey, true);
+    await houseDB.saveEncryptedUserData(Constants.userDataKey, MyApp.userInfo);
+
+    flowDecider(userDetails.profileStatus);
+  }
+
+  void flowDecider(String status) {
+    print(status);
+    if (status == accountStatusInActive) {
+      Navigator.of(context).pushReplacementNamed("/verify_token");
+    } else if (status == accountStatusTokenVerified) {
+      Navigator.of(context).pushReplacementNamed("/add_profile");
+    } else if (status == accountStatusProfile) {
+      Navigator.of(context).pushReplacementNamed("/search_house");
+    } else if (status == accountStatusHouse) {
+      Navigator.of(context).pushReplacementNamed("/success");
+    } else if (status == accountStatusActive) {
+      Navigator.of(context).pushReplacementNamed("/home");
+    }
+
+    //TODO persist data in shared preference
   }
 
   @override

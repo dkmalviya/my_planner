@@ -38,7 +38,7 @@ class _InviteHouseMemberState extends State<InviteHouseMember> {
           ),
         ));
     return Scaffold(
-      appBar: BackAppBarWidget("Invite Member", false, "", true, false, () {}),
+      appBar: BackAppBarWidget("Invite Member", false, "", true, false, () {},false, () {}),
       body: SingleChildScrollView(
           child: Container(
               margin: const EdgeInsets.all(Constants.kPadding),

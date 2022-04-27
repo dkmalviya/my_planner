@@ -181,7 +181,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     );
 
     return Scaffold(
-      appBar: BackAppBarWidget("Add Task", false, "", true, false, () {}),
+      appBar: BackAppBarWidget("Add Task", false, "", true, false, () {},false, () {}),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(

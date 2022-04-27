@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_planner/constant/app_constants.dart';
 import 'package:my_planner/constant/string_constant.dart';
+import 'package:my_planner/main.dart';
 import 'package:my_planner/models/response/login/get_user_details_response_dto.dart';
 import 'package:my_planner/service/on_board_repository.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/ui/dashboard/house/ui_view/widgets/alert_dialog.dart';
+import 'package:my_planner/util/house_db.dart';
 import 'package:my_planner/util/ui_utils.dart';
 import 'package:my_planner/util/utils.dart';
 import 'package:my_planner/util/validator_service.dart';
@@ -22,13 +24,21 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController textEditingControllerEmail = TextEditingController();
   TextEditingController textEditingControllerPassword = TextEditingController();
-  TextEditingController textEditingControllerPasswordConfirm =
-      TextEditingController();
+
 
   @override
   initState() {
     // TODO: implement initState
     super.initState();
+    setInitialValue();
+  }
+
+
+  setInitialValue(){
+
+
+    textEditingControllerEmail.text="deepeshmalviya@outlook.com";
+    textEditingControllerPassword.text="abc123";
   }
 
   @override
@@ -132,8 +142,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             textAlignVertical: TextAlignVertical.center)),
+
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.centerRight,
+                      child:  InkWell(
+                        child: const Text("Forgot Password?",style: HouseTheme.caption,),
+                        onTap: (){
+                          //Todo Navigate to forgot password.
+                        },
+                      ),
+                    ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -158,8 +179,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(
                           width: 140,
-                          child: ElevatedButton(
-                            style: clearButtonStyle,
+                          child: TextButton(
+                            style: transparentButtonStyle,
                             onPressed: () {
                               FocusScope.of(context).unfocus();
                               Navigator.of(context).pushNamed("/registration");
@@ -169,13 +190,31 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Text(
                                 "Register",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
+                                    color: Constants.yellow, fontSize: 18),
                               ),
                             ),
                           ),
                         )
                       ],
-                    )
+                    ),
+
+                  const SizedBox(height: 20,),
+
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.bottomCenter,
+                      child:  InkWell(
+                        child: const Text("To validate token please click here!!",style: TextStyle(fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          letterSpacing: 0.2,
+                          color: Constants.yellow),),
+                        onTap: (){
+                          FocusScope.of(context).unfocus();
+                        Navigator.of(context).pushNamed("/validate_token");
+
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -216,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
       var onBoardRepository = OnBoardRepository();
       var userDetails = await onBoardRepository.getUserDetails(authToken);
       ProgressLoader.hide();
-      saveUserDetails(userDetails);
+      saveUserDetails(userDetails,authToken);
     } catch (e) {
       ProgressLoader.hide();
       showDialog(
@@ -244,7 +283,26 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void saveUserDetails(GetUserDetails userDetails) {
+  Future<void> saveUserDetails(GetUserDetails userDetails, String authToken) async {
+    if(userDetails.profileStatus!=accountStatusInActive){
+      MyApp.userInfo.mobileNumber = userDetails.mobile;
+      MyApp.userInfo.gender = userDetails.gender;
+      MyApp.userInfo.firstName = userDetails.firstName;
+      MyApp.userInfo.lastName = userDetails.lastName;
+      MyApp.userInfo.notificationEnable = userDetails.notificationEnable;
+      MyApp.userInfo.maritalStatus = userDetails.maritalStatus;
+    }
+
+    MyApp.userInfo.email = userDetails.email;
+    MyApp.userInfo.authToken = authToken;
+    MyApp.userInfo.refreshToken = authToken;
+    MyApp.userInfo.profileStatus = userDetails.profileStatus;
+    HouseDB houseDB = HouseDB();
+
+    await houseDB.saveLoginStatus(Constants.loginStatusKey, true);
+    await houseDB.saveEncryptedUserData(
+        Constants.userDataKey, MyApp.userInfo);
+
     flowDecider(userDetails.profileStatus);
     //TODO persist data in shared preference
   }
@@ -256,7 +314,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if (status == accountStatusTokenVerified) {
       Navigator.of(context).pushReplacementNamed("/add_profile");
     } else if (status == accountStatusProfile) {
-      Navigator.of(context).pushReplacementNamed("/add_house");
+      Navigator.of(context).pushReplacementNamed("/search_house");
     } else if (status == accountStatusHouse) {
       Navigator.of(context).pushReplacementNamed("/success");
     } else if (status == accountStatusActive) {

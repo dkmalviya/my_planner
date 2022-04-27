@@ -34,4 +34,9 @@ class CreateProfileRequestDto {
     data['mobile'] = mobile;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'CreateProfileRequestDto{dateOfBirth: $dateOfBirth, firstName: $firstName, middleName: $middleName, lastName: $lastName, gender: $gender, maritalStatus: $maritalStatus, mobile: $mobile}';
+  }
 }

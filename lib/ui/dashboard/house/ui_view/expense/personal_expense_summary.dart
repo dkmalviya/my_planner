@@ -12,7 +12,8 @@ import 'package:my_planner/ui/dashboard/house/ui_view/widgets/personal_expense_c
 import 'package:my_planner/util/utils.dart';
 
 class PersonalExpenseSummaryScreen extends StatefulWidget {
-  const PersonalExpenseSummaryScreen({Key? key}) : super(key: key);
+  final List<ExpenseSummaryModel> personalExpenseList;
+  const PersonalExpenseSummaryScreen(this.personalExpenseList, {Key? key}) : super(key: key);
 
   @override
   State<PersonalExpenseSummaryScreen> createState() =>
@@ -21,7 +22,6 @@ class PersonalExpenseSummaryScreen extends StatefulWidget {
 
 class _PersonalExpenseSummaryScreenState
     extends State<PersonalExpenseSummaryScreen> {
-  List<ExpenseSummaryModel> myExpenses = [];
   List<PieChartSectionData> paiChartSelectionDatas = [];
 
   Map graphDataMap = HashMap<String, double>();
@@ -31,12 +31,12 @@ class _PersonalExpenseSummaryScreenState
   void initState() {
     // TODO: implement initState
     super.initState();
-    myExpenses.clear();
+    //myExpenses.clear();
 
-    loadMyExpenses();
+    //loadMyExpenses();
   }
 
-  void setGraphData() {
+  /*void setGraphData() {
     int i = 0;
 
     setState(() {
@@ -71,8 +71,8 @@ class _PersonalExpenseSummaryScreenState
 
     print(graphDataMap.toString());
   }
-
-  loadMyExpenses() async {
+*/
+ /* loadMyExpenses() async {
     for (var testModel in sampleExpense) {
       ExpenseSummaryModel expenseSummaryModel = ExpenseSummaryModel(
           testModel['expenseId'],
@@ -94,7 +94,7 @@ class _PersonalExpenseSummaryScreenState
     setState(() {
       setGraphData();
     });
-  }
+  }*/
 
   Widget expenseIcon(isHouseExpense) {
     if (isHouseExpense) {
@@ -148,7 +148,7 @@ class _PersonalExpenseSummaryScreenState
                 cacheExtent: 256,
                 padding:
                     const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-                itemCount: myExpenses.length,
+                itemCount: widget.personalExpenseList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     child: ListTile(
@@ -170,7 +170,7 @@ class _PersonalExpenseSummaryScreenState
                                 ]),
                             boxShadow: customDarkShadow),
                         child: expenseIcon(
-                            myExpenses.elementAt(index).isHouseExpense),
+                            widget.personalExpenseList.elementAt(index).isHouseExpense),
                       ),
 
                       /*CircleAvatar(
@@ -181,7 +181,7 @@ class _PersonalExpenseSummaryScreenState
                       title: Padding(
                         padding: const EdgeInsets.only(top: 2),
                         child: Text(
-                          myExpenses.elementAt(index).expenseName,
+                          widget.personalExpenseList.elementAt(index).expenseName,
                           style: HouseTheme.titleDark,
                         ),
                       ),
@@ -192,9 +192,9 @@ class _PersonalExpenseSummaryScreenState
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
                               'Category : ' +
-                                  myExpenses.elementAt(index).expenseCategory +
+                                  widget.personalExpenseList.elementAt(index).expenseCategory +
                                   " - " +
-                                  myExpenses
+                                  widget.personalExpenseList
                                       .elementAt(index)
                                       .expenseSubCategory,
                               style: HouseTheme.bodyDark,
@@ -204,7 +204,7 @@ class _PersonalExpenseSummaryScreenState
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
                               'Created  By : ' +
-                                  myExpenses.elementAt(index).houseMember,
+                                  widget.personalExpenseList.elementAt(index).houseMemberName,
                               style: HouseTheme.bodyDark,
                             ),
                           ),
@@ -212,14 +212,14 @@ class _PersonalExpenseSummaryScreenState
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
                               'Amount : ' +
-                                  myExpenses.elementAt(index).amount.toString(),
+                                  widget.personalExpenseList.elementAt(index).amount.toString(),
                               style: HouseTheme.bodyDark,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
-                              'Mode : ' + myExpenses.elementAt(index).mode,
+                              'Mode : ' + widget.personalExpenseList.elementAt(index).mode,
                               style: HouseTheme.bodyDark,
                             ),
                           ),

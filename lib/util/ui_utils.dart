@@ -34,8 +34,8 @@ final ButtonStyle primaryButtonStyle = ElevatedButton.styleFrom(
 );
 
 final ButtonStyle loginButtonStyle = ElevatedButton.styleFrom(
-  onPrimary: Constants.yellow,
-  primary: Constants.yellowLight,
+  onPrimary: Constants.yellowDark,
+  primary: Constants.yellowDark,
   minimumSize: const Size(88, 36),
   padding: const EdgeInsets.symmetric(horizontal: 16),
   shape: const RoundedRectangleBorder(
@@ -50,6 +50,42 @@ final ButtonStyle secondaryButtonStyle = ElevatedButton.styleFrom(
   minimumSize: const Size(88, 36),
   padding: const EdgeInsets.symmetric(horizontal: 16),
   shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(2)),
+  ),
+);
+
+final ButtonStyle transparentButtonStyle = TextButton.styleFrom(
+  primary: Colors.transparent,
+  textStyle:const TextStyle(fontWeight: FontWeight.w400,
+      fontSize: 14,
+      letterSpacing: -0.05,
+      color: Constants.yellow),
+  minimumSize: const Size(88, 36),
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  shape: const RoundedRectangleBorder(
+    side: BorderSide(
+        color: Constants.yellow,
+        width: 1,
+        style: BorderStyle.solid
+    ),
+    borderRadius: BorderRadius.all(Radius.circular(2)),
+  ),
+);
+
+final ButtonStyle transparentBorderButtonStyle = TextButton.styleFrom(
+  primary: Colors.transparent,
+  textStyle:const TextStyle(fontWeight: FontWeight.w400,
+      fontSize: 14,
+      letterSpacing: -0.05,
+      color: Constants.purpleDark),
+  minimumSize: const Size(88, 36),
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  shape: const RoundedRectangleBorder(
+    side: BorderSide(
+        color: Constants.purpleDark,
+        width: 1,
+        style: BorderStyle.solid
+    ),
     borderRadius: BorderRadius.all(Radius.circular(2)),
   ),
 );

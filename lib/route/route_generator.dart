@@ -13,9 +13,11 @@ import 'package:my_planner/ui/dashboard/house/ui_view/todo/todo_list.dart';
 import 'package:my_planner/ui/perlogin/login/login_screen.dart';
 import 'package:my_planner/ui/perlogin/signup/registration_screen.dart';
 import 'package:my_planner/ui/perlogin/splash/splash_screen.dart';
+import 'package:my_planner/ui/perlogin/validate_token/validate_token.dart';
 import 'package:my_planner/ui/profile/add_house_details.dart';
 import 'package:my_planner/ui/profile/add_personal_details.dart';
 import 'package:my_planner/ui/profile/info_screen.dart';
+import 'package:my_planner/ui/profile/search_house_details.dart';
 import 'package:my_planner/ui/profile/success_screen.dart';
 
 class RouteGenerator {
@@ -27,6 +29,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/registration':
         return MaterialPageRoute(builder: (_) => const RegistrationScreen());
+      case '/validate_token':
+        return MaterialPageRoute(builder: (_) => const ValidateToken());
       case '/home':
         return MaterialPageRoute(builder: (_) => const HouseAppHomeScreen());
       case '/expense_summary':
@@ -64,8 +68,12 @@ class RouteGenerator {
       case '/add_profile':
         return MaterialPageRoute(builder: (_) => const AddPersonalDetails());
 
+      case '/search_house':
+        return MaterialPageRoute(builder: (_) => const SearchHouseDetails());
       case '/add_house':
-        return MaterialPageRoute(builder: (_) => const AddHouseDetails());
+
+        final houseModel = settings.arguments;
+        return MaterialPageRoute(builder: (_) =>  AddHouseDetails(houseModel));
       case '/success':
         return MaterialPageRoute(builder: (_) => const SuccessScreen());
 

@@ -38,39 +38,37 @@ class HouseResponse {
     required this.area,
     required this.buildingName,
     required this.city,
-    required this.createdOn,
     required this.houseName,
     required this.houseNumber,
     required this.landmark,
     required this.pinCode,
     required this.street,
-    required this.updatedOn,
+
   });
 
   int addressId;
   String area;
   String buildingName;
   String city;
-  String createdOn;
+
   String houseName;
   String houseNumber;
   String landmark;
   String pinCode;
   String street;
-  String updatedOn;
+
 
   factory HouseResponse.fromJson(Map<String, dynamic> json) => HouseResponse(
         addressId: json["addressId"],
         area: json["area"],
         buildingName: json["buildingName"],
         city: json["city"],
-        createdOn: json["createdOn"],
         houseName: json["houseName"],
         houseNumber: json["houseNumber"],
         landmark: json["landmark"],
         pinCode: json["pinCode"],
         street: json["street"],
-        updatedOn: json["updatedOn"],
+
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,13 +76,12 @@ class HouseResponse {
         "area": area,
         "buildingName": buildingName,
         "city": city,
-        "createdOn": createdOn,
         "houseName": houseName,
         "houseNumber": houseNumber,
         "landmark": landmark,
         "pinCode": pinCode,
         "street": street,
-        "updatedOn": updatedOn,
+
       };
 }
 
@@ -111,7 +108,7 @@ class UserProfile {
   bool activeProfile;
   bool adminOfHouse;
   String email;
-  DateTime endDate;
+  String endDate;
   String firstName;
   String gender;
   String imageUrl;
@@ -121,14 +118,14 @@ class UserProfile {
   String middleName;
   String mobile;
   String profileStatus;
-  DateTime startDate;
+  String startDate;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         activeMember: json["activeMember"],
         activeProfile: json["activeProfile"],
         adminOfHouse: json["adminOfHouse"],
         email: json["email"],
-        endDate: DateTime.parse(json["endDate"]),
+        endDate: json["endDate"],
         firstName: json["firstName"],
         gender: json["gender"],
         imageUrl: json["imageUrl"],
@@ -138,7 +135,7 @@ class UserProfile {
         middleName: json["middleName"],
         mobile: json["mobile"],
         profileStatus: json["profileStatus"],
-        startDate: DateTime.parse(json["startDate"]),
+        startDate: json["startDate"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -146,7 +143,7 @@ class UserProfile {
         "activeProfile": activeProfile,
         "adminOfHouse": adminOfHouse,
         "email": email,
-        "endDate": endDate.toIso8601String(),
+        "endDate": endDate,
         "firstName": firstName,
         "gender": gender,
         "imageUrl": imageUrl,
@@ -156,6 +153,6 @@ class UserProfile {
         "middleName": middleName,
         "mobile": mobile,
         "profileStatus": profileStatus,
-        "startDate": startDate.toIso8601String(),
+        "startDate": startDate,
       };
 }

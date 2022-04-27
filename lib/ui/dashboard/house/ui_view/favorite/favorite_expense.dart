@@ -39,7 +39,7 @@ class _FavoriteExpenseScreenState extends State<FavoriteExpenseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BackAppBarWidget(
-          "Favorite", true, "add_favorite_expense", false, false, () {}),
+          "Favorite", true, "add_favorite_expense", false, false, () {},false, () {}),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(

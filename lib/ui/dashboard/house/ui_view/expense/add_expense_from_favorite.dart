@@ -32,35 +32,36 @@ class _AddExpenseFromFavoriteScreenState
   TextEditingController categoryTextController = TextEditingController();
   TextEditingController amountTextController = TextEditingController();
 
-  late FavoriteExpenseCategoryModel selectedExpenseSubCategory;
+  /*late FavoriteExpenseCategoryModel selectedExpenseSubCategory =
+      myFavoriteExpenses.first;*/
   late String selectedExpenseMode = _expenseModes.first;
   late List<DropdownMenuItem<FavoriteExpenseCategoryModel>> _dropdownMenuItems;
 
   @override
-  void initState() {
+  initState() {
     // TODO: implement initState
+
     super.initState();
     isScopeSelected = [true, false];
     isTypeSelected = [true, false];
-    loadFavoriteData();
   }
 
-  void loadFavoriteData() async {
+  /*void loadFavoriteData() async {
     var result = await houseDB.readEncryptedUserData(Constants.favExpenseKey);
 
     if (result != null) {
       setState(() {
         myFavoriteExpenses = uploadDocumentResponseDtoFromJson(result);
         if (myFavoriteExpenses.isNotEmpty) {
-          //       selectedExpenseSubCategory = myFavoriteExpenses.first;
+                 selectedExpenseSubCategory = myFavoriteExpenses.first;
         }
 
         _dropdownMenuItems = buildDropDownMenuItems(myFavoriteExpenses);
-        //  selectedExpenseSubCategory = _dropdownMenuItems[0].value!;
+          selectedExpenseSubCategory = _dropdownMenuItems[0].value!;
         print(myFavoriteExpenses);
       });
     }
-  }
+  }*/
 
   List<DropdownMenuItem<FavoriteExpenseCategoryModel>> buildDropDownMenuItems(
       List listItems) {
@@ -124,7 +125,7 @@ class _AddExpenseFromFavoriteScreenState
           style: HouseTheme.bodyDark,
         ));
 
-    final expenseSubCategorySelector = Container(
+   /* final expenseSubCategorySelector = Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
         decoration: BoxDecoration(
             color: Constants.purpleDark,
@@ -145,7 +146,7 @@ class _AddExpenseFromFavoriteScreenState
               });
             },
             isExpanded: true,
-            items: _dropdownMenuItems));
+            items: _dropdownMenuItems));*/
 
     //myFavoriteExpenses.map<DropdownMenuItem<String>>(
     //               (FavoriteExpenseCategoryModel value) {
@@ -310,7 +311,7 @@ class _AddExpenseFromFavoriteScreenState
             height: 6,
           ),
           titleExpenseSubCategory,
-          expenseSubCategorySelector,
+        //  expenseSubCategorySelector,
           const SizedBox(
             height: 6,
           ),

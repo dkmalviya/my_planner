@@ -2,12 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_planner/constant/app_constants.dart';
 import 'package:my_planner/constant/data.dart';
+import 'package:my_planner/main.dart';
+import 'package:my_planner/models/dto/expense_summary_card_model.dart';
 import 'package:my_planner/models/dto/expense_summary_model.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/util/utils.dart';
 
 class HouseExpenseSummaryScreen extends StatefulWidget {
-  const HouseExpenseSummaryScreen({Key? key}) : super(key: key);
+  final List<ExpenseSummaryModel> myExpenses;
+  final ExpenseSummaryCardModel expenseSummaryCardModel;
+
+
+  const HouseExpenseSummaryScreen(this.myExpenses, this.expenseSummaryCardModel, {Key? key})
+      : super(key: key);
+
+
 
   @override
   State<HouseExpenseSummaryScreen> createState() =>
@@ -15,37 +24,27 @@ class HouseExpenseSummaryScreen extends StatefulWidget {
 }
 
 class _HouseExpenseSummaryScreenState extends State<HouseExpenseSummaryScreen> {
-  List<ExpenseSummaryModel> myExpenses = [];
+  var userName = MyApp.userInfo.firstName + " " + MyApp.userInfo.lastName;
+
+  double selfExpense = 0;
+  double otherExpense = 0;
+  double totalHouseExpense = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    myExpenses.clear();
 
-    loadMyExpenses();
+    setState(() {
+       selfExpense = widget.expenseSummaryCardModel.selfExpense;
+       otherExpense = widget.expenseSummaryCardModel.othersExpense;
+       totalHouseExpense = widget.expenseSummaryCardModel.totalHouseExpense;
+
+    });
+
   }
 
-  loadMyExpenses() async {
-    for (var testModel in sampleExpense) {
-      ExpenseSummaryModel expenseSummaryModel = ExpenseSummaryModel(
-          testModel['expenseId'],
-          testModel['expenseName'],
-          testModel['expenseCategory'],
-          testModel['expenseSubCategory'],
-          testModel['mode'],
-          testModel['houseMember'],
-          testModel['houseMemberId'],
-          testModel['amount'],
-          testModel['date'],
-          testModel['isHouseExpense']);
-      if (expenseSummaryModel.isHouseExpense) {
-        setState(() {
-          myExpenses.add(expenseSummaryModel);
-        });
-      }
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +96,9 @@ class _HouseExpenseSummaryScreenState extends State<HouseExpenseSummaryScreen> {
                       overflow: TextOverflow.ellipsis,
                       style: HouseTheme.titleLight),
                 ),
-                const Text(
-                  "\u20B9 93,908.00",
-                  style: TextStyle(
+                Text(
+                  "\u20B9 $totalHouseExpense",
+                  style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
@@ -121,28 +120,28 @@ class _HouseExpenseSummaryScreenState extends State<HouseExpenseSummaryScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Column(
-                          children: const <Widget>[
-                            Text("\u20B9 25652.00",
-                                style: TextStyle(
+                          children: <Widget>[
+                            Text("\u20B9 $selfExpense",
+                                style: const TextStyle(
                                   color: Colors.white,
                                 )),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
-                            Text("Deepesh Malviya",
-                                style: TextStyle(
+                            Text(userName,
+                                style: const TextStyle(
                                     color: Colors.lightGreenAccent,
                                     fontWeight: FontWeight.w300))
                           ],
                         ),
                         Column(
-                          children: const <Widget>[
-                            Text("\u20B9 68256.00",
-                                style: TextStyle(color: Colors.white)),
-                            SizedBox(
+                          children: <Widget>[
+                            Text("\u20B9 $otherExpense",
+                                style: const TextStyle(color: Colors.white)),
+                            const SizedBox(
                               height: 5,
                             ),
-                            Text("Others",
+                            const Text("Others",
                                 style: TextStyle(
                                     color: Colors.lightGreenAccent,
                                     fontWeight: FontWeight.w300))
@@ -172,7 +171,7 @@ class _HouseExpenseSummaryScreenState extends State<HouseExpenseSummaryScreen> {
                 cacheExtent: 256,
                 padding:
                     const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-                itemCount: myExpenses.length,
+                itemCount: widget.myExpenses.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     child: ListTile(
@@ -195,9 +194,9 @@ class _HouseExpenseSummaryScreenState extends State<HouseExpenseSummaryScreen> {
                             boxShadow: customDarkShadow),
                         child: Center(
                             child: Text(
-                          myExpenses
+                          widget.myExpenses
                               .elementAt(index)
-                              .houseMember
+                              .houseMemberName
                               .substring(0, 1),
                           style: const TextStyle(
                               color: Colors.white,
@@ -214,7 +213,7 @@ class _HouseExpenseSummaryScreenState extends State<HouseExpenseSummaryScreen> {
                       title: Padding(
                         padding: const EdgeInsets.only(top: 2),
                         child: Text(
-                          myExpenses.elementAt(index).expenseName,
+                          widget.myExpenses.elementAt(index).expenseName,
                           style: HouseTheme.titleDark,
                         ),
                       ),
@@ -225,7 +224,9 @@ class _HouseExpenseSummaryScreenState extends State<HouseExpenseSummaryScreen> {
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
                               'Created  By : ' +
-                                  myExpenses.elementAt(index).houseMember,
+                                  widget.myExpenses
+                                      .elementAt(index)
+                                      .houseMemberName,
                               style: HouseTheme.bodyDark,
                             ),
                           ),
@@ -233,14 +234,18 @@ class _HouseExpenseSummaryScreenState extends State<HouseExpenseSummaryScreen> {
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
                               'Amount : ' +
-                                  myExpenses.elementAt(index).amount.toString(),
+                                  widget.myExpenses
+                                      .elementAt(index)
+                                      .amount
+                                      .toString(),
                               style: HouseTheme.bodyDark,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
-                              'Mode : ' + myExpenses.elementAt(index).mode,
+                              'Mode : ' +
+                                  widget.myExpenses.elementAt(index).mode,
                               style: HouseTheme.bodyDark,
                             ),
                           ),

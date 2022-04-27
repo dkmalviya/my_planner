@@ -5,6 +5,20 @@ bool isEmptyField(String value) {
   return false;
 }
 
+bool isNotEmptyField(String value) {
+  if (value.isEmpty) {
+    return false;
+  }
+  return true;
+}
+
+bool isValidLength(String value,int validLength){
+  if (value.length>=validLength) {
+    return true;
+  }
+  return false;
+}
+
 bool validatePhoneNumber(String value) {
   int len = value.length;
 
@@ -45,3 +59,5 @@ bool validateName(String value) {
   }
   return true;
 }
+
+

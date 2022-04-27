@@ -1,9 +1,15 @@
 class UserInfo {
-  int userId = 0;
+  int userId = 2;
+  String authToken="NA";
+  String refreshToken="NA";
   String userName = "NA";
   String mobileNumber = "NA";
   String email = "NA";
-  String password = "NA";
+  String firstName = "NA";
+  String lastName = "NA";
+  String gender = "NA";
+  String maritalStatus = "NA";
+  bool notificationEnable = false;
   String profileStatus = "NA";
 
   UserInfo();
@@ -14,8 +20,14 @@ class UserInfo {
     u.userName = json['userName'];
     u.mobileNumber = json['mobileNumber'];
     u.email = json['email'];
-    u.password = json['password'];
     u.profileStatus = json['profileStatus'];
+    u.firstName = json['firstName'];
+    u.lastName = json['lastName'];
+    u.gender = json['gender'];
+    u.maritalStatus = json['maritalStatus'];
+    u.notificationEnable=json['notificationEnable'];
+    u.authToken=json['authToken'];
+    u.refreshToken=json['refreshToken'];
     return u;
   }
 
@@ -24,12 +36,18 @@ class UserInfo {
         'userName': userName,
         'mobileNumber': mobileNumber,
         'email': email,
-        'password': password,
         'profileStatus': profileStatus,
+        'firstName': firstName,
+        'lastName': lastName,
+        'gender': gender,
+        'maritalStatus': maritalStatus,
+        'notificationEnable': notificationEnable,
+        'authToken': authToken,
+        'refreshToken': refreshToken,
       };
 
   @override
   String toString() {
-    return 'UserInfo{userId: $userId, userName: $userName, mobileNumber: $mobileNumber, email: $email, password: $password, profileStatus: $profileStatus}';
+    return 'UserInfo{userId: $userId, authToken: $authToken, refreshToken: $refreshToken, userName: $userName, mobileNumber: $mobileNumber, email: $email, firstName: $firstName, lastName: $lastName, gender: $gender, maritalStatus: $maritalStatus, notificationEnable: $notificationEnable, profileStatus: $profileStatus}';
   }
 }

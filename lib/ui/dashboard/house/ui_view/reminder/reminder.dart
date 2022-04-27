@@ -74,7 +74,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
     return Scaffold(
       appBar: BackAppBarWidget(
-          "Reminders", true, "add_reminder", false, false, () {}),
+          "Reminders", true, "add_reminder", false, false, () {},false, () {}),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

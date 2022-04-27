@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_planner/constant/app_constants.dart';
+import 'package:my_planner/main.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 
 class BackAppBarWidget extends StatelessWidget with PreferredSizeWidget {
@@ -8,7 +9,9 @@ class BackAppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final String addButtonDestination;
   final bool isHomeButtonVisible;
   final bool isSaveButtonVisible;
-  final Function onSaveButtonClick;
+  final VoidCallback onSaveButtonClick;
+  final bool isRefreshButtonVisible;
+  final VoidCallback onRefreshButtonClick;
 
   BackAppBarWidget(
       this.appbarTitle,
@@ -17,6 +20,8 @@ class BackAppBarWidget extends StatelessWidget with PreferredSizeWidget {
       this.isHomeButtonVisible,
       this.isSaveButtonVisible,
       this.onSaveButtonClick,
+      this.isRefreshButtonVisible,
+      this.onRefreshButtonClick,
       {Key? key})
       : super(key: key);
 
@@ -45,9 +50,21 @@ class BackAppBarWidget extends StatelessWidget with PreferredSizeWidget {
             ),
             const Spacer(),
             Visibility(
+              visible: isRefreshButtonVisible,
+              child: IconButton(
+                color: Colors.white,
+                iconSize: 34,
+                onPressed: onRefreshButtonClick,
+                icon: const Icon(
+                  Icons.sync,
+                  color: Constants.white,
+                ),
+              ),
+            ),
+            Visibility(
               visible: isSaveButtonVisible,
               child: InkWell(
-                onTap: onSaveButtonClick(),
+                onTap: onSaveButtonClick,
                 child: const Text("Save", style: HouseTheme.appbarSubtitle),
               ),
             ),
@@ -58,6 +75,7 @@ class BackAppBarWidget extends StatelessWidget with PreferredSizeWidget {
                 iconSize: 34,
                 onPressed: () {
                   print("add Button Clicked");
+                  MyApp.isRefreshButtonEnable=true;
                   Navigator.of(context).pushNamed("/" + addButtonDestination);
                 },
                 icon: const Icon(

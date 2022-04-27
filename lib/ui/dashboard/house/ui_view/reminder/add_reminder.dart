@@ -227,7 +227,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     );
 
     return Scaffold(
-      appBar: BackAppBarWidget("Add Reminder", false, "", true, false, () {}),
+      appBar: BackAppBarWidget("Add Reminder", false, "", true, false, () {},false, () {}),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(

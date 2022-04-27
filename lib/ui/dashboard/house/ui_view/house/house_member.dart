@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_planner/constant/app_constants.dart';
 import 'package:my_planner/constant/data.dart';
-import 'package:my_planner/models/dto/house_member_model.dart';
+import 'package:my_planner/models/dto/member_model.dart';
 import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 import 'package:my_planner/ui/dashboard/house/ui_view/widgets/back_app_bar_widget.dart';
 import 'package:my_planner/util/ui_utils.dart';
@@ -16,7 +16,7 @@ class HouseMemberScreen extends StatefulWidget {
 }
 
 class _HouseMemberScreenState extends State<HouseMemberScreen> {
-  static Set<HouseMemberModel> myHouseMembers = {};
+  static Set<MemberModel> myHouseMembers = {};
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _HouseMemberScreenState extends State<HouseMemberScreen> {
 
   loadMyHouseMembers() {
     for (var testModel in sampleMembers) {
-      HouseMemberModel houseMemberModelTemp = HouseMemberModel(
+      MemberModel houseMemberModelTemp = MemberModel(
         testModel['memberId'],
         testModel['houseMemberName'],
         testModel['age'],
@@ -52,7 +52,7 @@ class _HouseMemberScreenState extends State<HouseMemberScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BackAppBarWidget(
-          "House Member", true, "add_house_member", false, false, () {}),
+          "House Member", true, "add_house_member", false, false, () {},false, () {}),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
           Widget>[
         Container(

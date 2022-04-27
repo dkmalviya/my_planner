@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Container(
             margin: const EdgeInsets.all(Constants.cardPadding),
             width: MediaQuery.of(context).size.width,
-            height: 190,
+            height: 235,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                   begin: Alignment.bottomRight,
@@ -117,12 +117,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text("Income",
                                 style: TextStyle(
                                     color: Colors.lightGreenAccent,
+                                    fontWeight: FontWeight.w300)),
+
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text("\u20B9 25,000.0",
+                                style: TextStyle(color: Colors.white)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text("Personal Expense",
+                                style: TextStyle(
+                                    color: Colors.orangeAccent,
                                     fontWeight: FontWeight.w300))
                           ],
                         ),
                         Column(
                           children: const <Widget>[
-                            Text("\u20B9 " + "25,000.0",
+                            Text("\u20B9 25,000.0",
                                 style: TextStyle(color: Colors.white)),
                             SizedBox(
                               height: 5,
@@ -130,24 +143,26 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text("Savings",
                                 style: TextStyle(
                                     color: Colors.lightGreenAccent,
-                                    fontWeight: FontWeight.w300))
-                          ],
-                        ),
-                        Column(
-                          children: const <Widget>[
-                            Text("\u20B9 " + "75,000.0",
+                                    fontWeight: FontWeight.w300)),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text("\u20B9 30,000.0",
                                 style: TextStyle(color: Colors.white)),
                             SizedBox(
                               height: 5,
                             ),
-                            Text("Expense",
+                            Text("House Expense",
                                 style: TextStyle(
-                                    color: Colors.lightGreenAccent,
+                                    color: Colors.orangeAccent,
                                     fontWeight: FontWeight.w300))
                           ],
-                        )
+                        ),
+
                       ],
+
                     ),
+
                   ),
                 ),
               ],

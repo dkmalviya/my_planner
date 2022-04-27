@@ -5,9 +5,9 @@ import 'package:my_planner/ui/dashboard/house/house_theme.dart';
 class ProgressLoader {
   static void show(BuildContext context) {
     Loader.show(context,
-        isSafeAreaOverlay: false,
+        isSafeAreaOverlay: true,
         isAppbarOverlay: true,
-        isBottomBarOverlay: false,
+        isBottomBarOverlay: true,
         progressIndicator: const CircularProgressIndicator(
           backgroundColor: Colors.grey,
         ),

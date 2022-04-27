@@ -40,21 +40,6 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tokenFormField = Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-        decoration: BoxDecoration(
-            color: Constants.purpleDark,
-            border: Border.all(color: Constants.purpleLight),
-            borderRadius: BorderRadius.circular(10)),
-        child: TextFormField(
-          style: HouseTheme.bodyLight,
-          controller: tokenTextController,
-          decoration: const InputDecoration(
-            hintText: "Enter token here",
-            border: InputBorder.none,
-            hintStyle: HouseTheme.bodyLight,
-          ),
-        ));
     return SafeArea(
       child: Scaffold(
         appBar: const StepView([true, false, false, false]),
@@ -81,13 +66,12 @@ class _InfoScreenState extends State<InfoScreen> {
                   height: 12,
                 ),
                 const Text(
-                  "\t \t \t \t \t \t \t \t We would like to inform you that ur account is not yet approved.\nTo verify your account please insert token on below text field and click on verify button below.",
+                  "\t \t \t \t \t \t \t \t We would like to inform you that ur account is not yet completed.\nTo complete your account details please click on ok button below.",
                   style: HouseTheme.bodyLight,
                 ),
                 const SizedBox(
                   height: 12,
                 ),
-                tokenFormField,
                 const SizedBox(
                   height: 12,
                 ),
@@ -98,16 +82,12 @@ class _InfoScreenState extends State<InfoScreen> {
                       style: secondaryButtonStyle,
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-
-                        if (tokenTextController.text != "") {
-                          Navigator.of(context).pushNamed("/add_profile");
-                          //TODO Verify Token api call
-                        }
+                        Navigator.of(context).pushNamed("/add_profile");
                       },
                       child: const Padding(
                         padding: EdgeInsets.all(12.0),
                         child: Text(
-                          "Verify",
+                          "OK",
                           style: HouseTheme.bodyDark,
                         ),
                       ),
